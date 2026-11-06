@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grand Prix d'Ana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Hind:wght@400;600;700&family=Titillium+Web:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#000d2d; --navy2:#0b1a45; --cream:#fcf1de; --pink:#ef9e9a; --orange:#fa4e05; --red:#ba3208;
+  --ink:var(--cream); --muted:#c9c0b2; --card:rgba(252,241,222,.06); --line:rgba(252,241,222,.15);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--ink);font-family:Hind,system-ui,sans-serif;line-height:1.55;overflow-x:hidden}
+h1,h2,h3{font-family:"Titillium Web",sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:.02em;line-height:1.05}
+.hand{font-family:"Gloria Hallelujah",cursive}
+section{min-height:100vh;padding:80px 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative}
+.wrap{max-width:820px;width:100%}
+.tag{display:inline-block;font-family:"Titillium Web";font-weight:700;font-size:.8rem;letter-spacing:.2em;color:var(--orange);border:1px solid var(--orange);padding:4px 12px;border-radius:99px;margin-bottom:18px}
+h2{font-size:clamp(2rem,6vw,3.6rem);margin-bottom:14px}
+h2 em{font-style:normal;color:var(--pink)}
+.lead{color:var(--muted);font-size:1.1rem;max-width:600px;margin:0 auto 32px}
+.checker{height:18px;width:100%;background:repeating-conic-gradient(var(--cream) 0 25%,var(--navy) 0 50%) 0 0/18px 18px;opacity:.9}
+.btn{font-family:"Titillium Web";font-weight:900;text-transform:uppercase;letter-spacing:.08em;font-size:1rem;border:0;border-radius:10px;padding:14px 28px;cursor:pointer;background:var(--orange);color:#fff;box-shadow:0 6px 0 var(--red);transition:transform .1s,box-shadow .1s}
+.btn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--red)}
+.btn.ghost{background:transparent;color:var(--cream);border:2px solid var(--line);box-shadow:none}
+
+/* START LIGHTS */
+#start{background:radial-gradient(ellipse at top,var(--navy2),var(--navy) 70%)}
+.gantry{display:flex;gap:14px;justify-content:center;background:#111;padding:16px 20px;border-radius:14px;margin:28px auto;width:max-content;max-width:100%;border:3px solid #222}
+.light{width:clamp(38px,10vw,62px);aspect-ratio:1;border-radius:50%;background:#2a0a0a;box-shadow:inset 0 0 12px #000;transition:background .1s}
+.light.on{background:#ff1e1e;box-shadow:0 0 30px #ff1e1e,inset 0 0 8px #900}
+h1{font-size:clamp(2.6rem,10vw,6rem)}
+h1 span{color:var(--orange)}
+#go-msg{font-size:clamp(1.2rem,4vw,1.8rem);min-height:2.4em;margin-top:6px;color:var(--pink)}
+.scroll-hint{margin-top:30px;opacity:0;transition:opacity .6s;color:var(--muted)}
+.scroll-hint.show{opacity:1}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;text-align:left}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;transition:transform .2s,border-color .2s}
+.card:hover{transform:translateY(-4px);border-color:var(--pink)}
+.card .pos{font-family:"Titillium Web";font-weight:900;font-size:2.4rem;color:var(--orange);line-height:1}
+.card h3{font-size:1.1rem;margin:6px 0}
+.card p{color:var(--muted);font-size:.98rem}
+
+/* TELEMETRY */
+.tele{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;text-align:left}
+.row{margin:16px 0}
+.row .lbl{display:flex;justify-content:space-between;font-weight:600;margin-bottom:6px;gap:12px}
+.row .lbl b{font-family:"Titillium Web";color:var(--pink);white-space:nowrap}
+.bar{height:12px;border-radius:99px;background:rgba(252,241,222,.1);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--orange));border-radius:99px;transition:width 1.6s cubic-bezier(.2,.8,.2,1)}
+.note{font-size:.9rem;color:var(--muted);margin-top:4px}
+
+/* PIT STOP */
+.fuels{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:10px 0 20px}
+.fuel{background:var(--card);border:2px solid var(--line);color:var(--cream);border-radius:14px;padding:14px 18px;font:600 1rem Hind;cursor:pointer;min-width:150px}
+.fuel:hover{border-color:var(--orange)}
+#pit-result{min-height:3em;font-size:1.15rem;color:var(--pink)}
+
+/* PENALTY */
+.penalty{background:linear-gradient(135deg,#0d2a6b,#071a48);border:3px solid #c8102e;border-radius:20px;padding:28px 20px;max-width:520px;margin:0 auto}
+.clock{font-family:"Titillium Web";font-weight:900;font-size:clamp(3rem,14vw,5rem);color:#ff3b3b;letter-spacing:.05em;text-shadow:0 0 18px rgba(255,59,59,.5)}
+.penalty small{display:block;color:var(--muted);margin-top:6px}
+
+/* POLAROIDS */
+.pols{display:flex;flex-wrap:wrap;gap:22px;justify-content:center;margin-top:10px}
+.pol{background:#fff;color:#222;padding:12px 12px 16px;width:200px;box-shadow:0 10px 25px rgba(0,0,0,.4);transform:rotate(var(--r));transition:transform .25s}
+.pol:hover{transform:rotate(0) scale(1.05)}
+.pol .ph{height:170px;display:flex;align-items:center;justify-content:center;font-size:4.2rem;background:var(--c)}
+.pol p{font-family:"Gloria Hallelujah";font-size:.95rem;margin-top:8px}
+
+/* DRIVER */
+.driver{display:grid;grid-template-columns:1fr 1fr;align-items:end;gap:10px;background:linear-gradient(160deg,var(--orange),var(--red) 55%,#3a0d0a);border-radius:24px;overflow:hidden;text-align:left;position:relative;min-height:440px}
+.driver .num{position:absolute;right:18px;top:6px;font-family:"Titillium Web";font-weight:900;font-size:clamp(6rem,22vw,11rem);color:rgba(252,241,222,.18);line-height:1}
+.driver .info{padding:28px 0 28px 26px;position:relative;z-index:1;align-self:center}
+.driver .info small{font-family:"Titillium Web";letter-spacing:.2em;font-weight:700;opacity:.85}
+.driver .info h3{font-size:clamp(2.6rem,9vw,4.4rem);margin:4px 0 14px}
+.driver dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:.95rem}
+.driver dt{opacity:.75}.driver dd{font-weight:700}
+.driver img{width:100%;max-height:440px;object-fit:contain;object-position:bottom;display:block;position:relative;z-index:1;filter:drop-shadow(0 10px 20px rgba(0,0,0,.35))}
+@media (max-width:560px){.driver{grid-template-columns:1fr}.driver .info{padding:26px 22px 0}.driver img{max-height:360px;margin:0 auto;width:auto;max-width:100%}}
+.pol .ph img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* LETTER */
+.letter{background:var(--cream);color:var(--navy);border-radius:6px;padding:clamp(24px,6vw,48px);text-align:left;max-width:640px;margin:0 auto;box-shadow:0 20px 50px rgba(0,0,0,.45);position:relative;transform:rotate(-.6deg)}
+.letter p{font-size:1.08rem;margin-bottom:14px}
+.letter .hand{font-size:1.5rem;color:var(--red)}
+.letter .sign{text-align:right;margin-top:10px}
+.mou{display:flex;align-items:center;gap:14px;background:rgba(0,13,45,.06);border-radius:12px;padding:10px 14px;margin:6px 0 16px}
+.mou img{width:110px;flex:none;transform:rotate(-8deg)}
+.mou span{font-family:"Gloria Hallelujah";font-size:.95rem;color:var(--red)}
+
+/* FINAL */
+#final{background:radial-gradient(ellipse at bottom,#3a0d0a,var(--navy) 65%)}
+.ask{font-size:clamp(2rem,7vw,4rem)}
+.choices{position:relative;height:120px;width:100%;max-width:520px;margin:30px auto 0;display:flex;justify-content:center;align-items:center;gap:24px}
+#no{position:relative;transition:left .25s,top .25s}
+#yes-msg{display:none}
+#yes-msg.show{display:block;animation:pop .5s ease}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.big-heart{font-size:5rem;animation:beat 1s infinite}
+@keyframes beat{0%,100%{transform:scale(1)}30%{transform:scale(1.2)}}
+canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+footer{padding:30px 16px;text-align:center;color:var(--muted);font-size:.9rem}
+
+/* toast */
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--cream);color:var(--navy);padding:12px 20px;border-radius:12px;font-weight:700;transition:transform .3s;z-index:60;max-width:calc(100% - 32px);text-align:center}
+#toast.show{transform:translateX(-50%) translateY(0)}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s,transform .7s}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<div id="toast"></div>
+
+<!-- 1. START -->
+<section id="start">
+  <div class="wrap">
+    <span class="tag">GRAND PRIX D'ANA · SAISON 2026</span>
+    <h1>Lights out<br>and away <span>we go</span></h1>
+    <div class="gantry" aria-hidden="true">
+      <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
+    </div>
+    <button class="btn" id="startBtn">Démarrer la course</button>
+    <p id="go-msg" class="hand"></p>
+    <p class="scroll-hint" id="hint">↓ Scrolle, ma biche, la course commence ↓</p>
+  </div>
+</section>
+<div class="checker"></div>
+
+<!-- 1b. DRIVER -->
+<section id="driver">
+  <div class="wrap reveal">
+    <span class="tag">PRÉSENTATION DE LA PILOTE</span>
+    <div class="driver">
+      <div class="num">1</div>
+      <div class="info">
+        <small>PILOTE N°1 · TITULAIRE À VIE</small>
+        <h3>Ana</h3>
+        <dl>
+          <dt>Écurie</dt><dd>Nous deux</dd>
+          <dt>Carburant</dt><dd>Le hockey &amp; les Aigles de Nice 🦅</dd>
+          <dt>Spécialité</dt><dd>Les yeux plissés</dd>
+          <dt>Titres</dt><dd>Tous mes sourires</dd>
+        </dl>
+      </div>
+      <img src="assets/ana.png" alt="Ana">
+    </div>
+  </div>
+</section>
+
+<!-- 2. QUALIFS -->
+<section id="qualifs">
+  <div class="wrap reveal">
+    <span class="tag">SESSION 1 · QUALIFICATIONS</span>
+    <h2>Pourquoi t'es en <em>pole position</em></h2>
+    <p class="lead">Les commissaires ont étudié les chronos. Le verdict est sans appel, personne d'autre n'était dans le même dixième.</p>
+    <div class="grid">
+      <div class="card"><div class="pos">P1</div><h3>Ton rire</h3><p>Celui où t'as les yeux tellement plissés qu'on se demande si tu vois encore la route.</p></div>
+      <div class="card"><div class="pos">P1</div><h3>Ta mauvaise foi</h3><p>Niveau ingénieur de course qui conteste une pénalité. Tu gagnes toujours, même quand t'as tort.</p></div>
+      <div class="card"><div class="pos">P1</div><h3>Ton carburant</h3><p>Une Red Bull Coco Acaï et t'es à 340 km/h. Moi je suis juste là pour suivre l'aspiration.</p></div>
+      <div class="card"><div class="pos">P1</div><h3>Ton palmarès</h3><p>Monaco, la safety car, les loges : t'as déjà fait le Grand Prix le plus chic du calendrier. Le Canada, c'est juste la suite logique du championnat.</p></div>
+      <div class="card"><div class="pos">P1</div><h3>Les enfants 🐶</h3><p>J'ai vu tes balades en forêt avec « les enfants ». Je suis prêt pour la rencontre officielle. Je lance la balle, promis.</p></div>
+      <div class="card"><div class="pos">P1</div><h3>Les couchers de soleil</h3><p>T'as l'œil pour les ciels orange au bord de l'eau. Moi j'ai l'œil pour celle qui les prend en photo.</p></div>
+      <div class="card"><div class="pos">P1</div><h3>Toi, tout court</h3><p>J'ai cherché un défaut pour l'équilibre du championnat. Rien trouvé. La FIA enquête.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. TELEMETRY -->
+<section id="tele">
+  <div class="wrap reveal">
+    <span class="tag">SESSION 2 · TÉLÉMÉTRIE</span>
+    <h2>Les données <em>ne mentent pas</em></h2>
+    <p class="lead">Analyse réalisée par le département Data de Skema (moi, à 2h du mat).</p>
+    <div class="tele">
+      <div class="row"><div class="lbl">Envie de te voir <b data-v="100">0%</b></div><div class="bar"><i data-w="100"></i></div></div>
+      <div class="row"><div class="lbl">Fréquence à laquelle je pense à toi <b data-v="99">0%</b></div><div class="bar"><i data-w="99"></i></div><p class="note">Le 1% restant, je dormais. Et encore.</p></div>
+      <div class="row"><div class="lbl">Compréhension des règles du hockey <b data-v="4">0%</b></div><div class="bar"><i data-w="4"></i></div><p class="note">Toi t'es une vraie supportrice des Aigles. Moi je les critique tout le temps… mais je crierai à chaque bagarre, promis.</p></div>
+      <div class="row"><div class="lbl">Probabilité qu'on finisse sur Netflix <b data-v="101">0%</b></div><div class="bar"><i data-w="100"></i></div></div>
+      <div class="row"><div class="lbl">Fiabilité de Stroll <b data-v="12">0%</b></div><div class="bar"><i data-w="12"></i></div><p class="note">Toujours plus fiable que ton caractère le matin.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. PIT STOP -->
+<section id="pit">
+  <div class="wrap reveal">
+    <span class="tag">SESSION 3 · PIT STOP</span>
+    <h2>Choisis ton <em>carburant</em></h2>
+    <p class="lead">Arrêt au stand obligatoire. L'équipe est prête, il manque juste ta commande.</p>
+    <div class="fuels">
+      <button class="fuel" data-f="aigles">🦅 Un match des Aigles de Nice</button>
+      <button class="fuel" data-f="coco">🥥 Red Bull Coco Acaï</button>
+      <button class="fuel" data-f="poutine">🍟 Poutine XXL</button>
+      <button class="fuel" data-f="planche">🧀 Planche apéro en terrasse</button>
+      <button class="fuel" data-f="choco">☕ Chocolat chaud à Central Park</button>
+      <button class="fuel" data-f="moi">🙋 Moi</button>
+    </div>
+    <p id="pit-result" class="hand"></p>
+  </div>
+</section>
+
+<!-- 5. PENALTY BOX -->
+<section id="penalty">
+  <div class="wrap reveal">
+    <span class="tag">INTERRUPTION · CENTRE BELL</span>
+    <h2>Banc des <em>pénalités</em></h2>
+    <p class="lead">L'arbitre a sifflé. Motif : être beaucoup trop mignonne en public. Infraction répétée.</p>
+    <div class="penalty">
+      <div class="clock" id="clock">2:00</div>
+      <small>Sentence : 2 minutes à lire ce site sans sourire.</small>
+      <div style="margin-top:18px"><button class="btn ghost" id="smile">J'ai souri 😅</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. POLAROIDS -->
+<section id="pols">
+  <div class="wrap reveal">
+    <span class="tag">SESSION 4 · PHOTOS À VENIR</span>
+    <h2>Les polaroids <em>qu'on n'a pas encore</em></h2>
+    <p class="lead">Mode crari insta activé. Il reste juste à les prendre.</p>
+    <div class="pols">
+      <div class="pol" style="--r:-4deg;--c:#ffd6c2"><div class="ph">🏎️</div><p>Nous deux, bouchons d'oreilles, Grand Prix du Canada</p></div>
+      <div class="pol" style="--r:3deg;--c:#c9d6ff"><div class="ph">🏒</div><p>Toi qui fais semblant de comprendre le hors-jeu</p></div>
+      <div class="pol" style="--r:-2deg;--c:#ffe7a8"><div class="ph">🚕</div><p>La photo cliché dans le taxi jaune</p></div>
+      <div class="pol" style="--r:5deg;--c:#ffc9cf"><div class="ph">🌃</div><p>Manhattan by night, juste nous</p></div>
+      <div class="pol" style="--r:-5deg;--c:#bfe8ff"><div class="ph">🏄</div><p>Toi debout sur un wake, moi qui bois la tasse derrière</p></div>
+      <div class="pol" style="--r:4deg;--c:#d9c9ff"><div class="ph">🎤</div><p>Nous deux à un stand-up, toi qui ris plus fort que toute la salle</p></div>
+      <div class="pol" style="--r:-3deg;--c:#ffcf9e"><div class="ph"><img src="assets/cote.webp" alt="Côte rocheuse au bord de la mer"></div><p>Ce coin-là, au coucher du soleil, mais cette fois je suis dans la photo</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6b. LETTER -->
+<section id="letter">
+  <div class="wrap reveal">
+    <span class="tag">RADIO DE L'ÉQUIPE · SANS FILTRE</span>
+    <h2>Maintenant, <em>pour de vrai</em></h2>
+    <p class="lead">Fini les blagues deux minutes.</p>
+    <div class="letter">
+      <p class="hand">Ana,</p>
+      <p>Je sais que j'ai du mal à me confier. Je parle pas beaucoup de ce que je ressens, et des fois ça peut donner l'impression que je pense pas à toi. Mais c'est tout l'inverse. Je pense à toi tout le temps, et tu me manques. Vraiment.</p>
+      <p>La distance, c'est dur. Plus dur que ce que je laisse paraître. Il y a des jours où j'ai des coups de mou, où tout paraît plus long et plus loin.</p>
+      <div class="mou"><img src="assets/sticker.webp" alt="Sticker : moi étalé par terre"><span>moi, certains soirs, pendant les coups de mou</span></div>
+      <p>Mais c'est la période qui veut ça, et je sais que ça va passer. Parce qu'il y a une chose qui ne bouge pas : c'est avec toi que je veux être. C'est toi que j'imagine quand je pense à mon futur.</p>
+      <p>Et c'est pas parce que t'as déjà saigné que ça veut dire qu'il y a pas de raison que ça marche entre nous. Des raisons, moi j'en vois plein.</p>
+      <p>Et maintenant, ça se fait à deux.</p>
+      <p class="hand sign">❤</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7. FINAL -->
+<section id="final">
+  <div class="wrap">
+    <span class="tag">DERNIER TOUR · DRAPEAU À DAMIER</span>
+    <div id="question">
+      <h2 class="ask">Est-ce que tu veux<br>qu'on fasse ça <em>à deux</em> ?</h2>
+      <p class="lead">Pas de chrono, pas de stratégie. Juste toi, moi, et la suite à écrire ensemble.</p>
+      <div class="choices" id="choices">
+        <button class="btn" id="yes">Oui 🏆</button>
+        <button class="btn ghost" id="no">Non</button>
+      </div>
+    </div>
+    <div id="yes-msg">
+      <div class="big-heart">❤️</div>
+      <h2>Victoire <em>validée</em></h2>
+      <p class="lead">Champagne sur le podium (ou Coco Acaï, on sait). L'algorithme avait raison depuis le début.<br>Paraît que ça donne des ailes. Moi c'est toi qui me fais décoller ⚡</p>
+      <p class="hand" style="font-size:1.8rem;color:var(--pink)">C'est ciao mon doudouwww ❤</p>
+    </div>
+  </div>
+</section>
+<div class="checker"></div>
+<footer>Fabriqué avec beaucoup trop d'amour et pas assez de sommeil.</footer>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('show');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('show'),2600)}
+
+/* Start lights */
+$('#startBtn').addEventListener('click',e=>{
+  e.target.disabled=true;e.target.style.opacity=.4;
+  const L=$$('.light');L.forEach(l=>l.classList.remove('on'));
+  L.forEach((l,i)=>setTimeout(()=>l.classList.add('on'),500*(i+1)));
+  setTimeout(()=>{L.forEach(l=>l.classList.remove('on'));
+    $('#go-msg').textContent="Et c'est parti… direction ton cœur 🏁";
+    $('#hint').classList.add('show');
+    e.target.disabled=false;e.target.style.opacity=1;e.target.textContent='Rejouer le départ';
+  },500*5+700+Math.random()*1200);
+});
+
+/* Reveal + telemetry */
+const io=new IntersectionObserver(es=>es.forEach(en=>{
+  if(!en.isIntersecting)return;en.target.classList.add('in');
+  en.target.querySelectorAll('.bar i').forEach(b=>b.style.width=b.dataset.w+'%');
+  en.target.querySelectorAll('b[data-v]').forEach(b=>{
+    if(b._done)return;b._done=1;const end=+b.dataset.v;let n=0;
+    const step=()=>{n=Math.min(end,n+Math.max(1,Math.ceil(end/40)));b.textContent=n+'%';if(n<end)requestAnimationFrame(step)};step();
+  });
+  if(en.target.closest('#penalty'))startClock();
+  io.unobserve(en.target);
+}),{threshold:.25});
+$$('.reveal').forEach(r=>io.observe(r));
+
+/* Pit stop */
+const pit={
+  coco:"Évidemment. Le carburant officiel de l'écurie. Personne n'est surpris.",
+  poutine:"Bon choix stratégique. Calories don't count on vacation.",
+  aigles:"Évidemment. Je vais encore critiquer les Aigles tout le match… mais je serai là, à côté de toi, à crier quand même 🏒",
+  planche:"Charcut', fromage, olives, soleil. Le ravitaillement des vraies championnes. Je ramène le pain.",
+  choco:"Vue sur Central Park enneigé, noté pour l'itinéraire. Je réserve le banc.",
+  moi:"Excellent choix. Plein fait, réservoir illimité, aucun arrêt nécessaire 😏"
+};
+$$('.fuel').forEach(b=>b.addEventListener('click',()=>{$('#pit-result').textContent=pit[b.dataset.f]}));
+
+/* Penalty clock */
+let clockStarted=false,tInt;
+function startClock(){if(clockStarted)return;clockStarted=true;let s=120;
+  tInt=setInterval(()=>{s--;$('#clock').textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');if(s<=0){clearInterval(tInt);toast('Peine purgée. Retour sur la glace ⛸️')}},1000)}
+$('#smile').addEventListener('click',()=>{clearInterval(tInt);$('#clock').textContent='+2:00';
+  toast("Récidive constatée. Je prends ça comme une victoire.");
+  setTimeout(()=>{clockStarted=false;startClock()},1500)});
+
+/* Runaway "Non" */
+const noMsgs=["Non","T'es sûre ?","Stroll a mieux visé","Box box, mauvais bouton","Non n'est pas homologué","Essaie l'autre 👉"];
+let noCount=0;
+function dodge(){
+  const box=$('#choices').getBoundingClientRect(), b=$('#no');
+  const maxX=box.width/2-60, maxY=box.height/2-24;
+  b.style.left=(Math.random()*2-1)*maxX+'px';
+  b.style.top=(Math.random()*2-1)*maxY+'px';
+  noCount++;b.textContent=noMsgs[Math.min(noCount,noMsgs.length-1)];
+  const y=$('#yes');y.style.transform=`scale(${Math.min(1+noCount*.12,1.8)})`;
+}
+$('#no').addEventListener('mouseenter',dodge);
+$('#no').addEventListener('click',e=>{e.preventDefault();dodge()});
+$('#yes').addEventListener('click',()=>{$('#question').style.display='none';$('#yes-msg').classList.add('show');confetti()});
+
+/* Confetti */
+function confetti(){
+  const c=$('#confetti'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;
+  const cols=['#fa4e05','#ef9e9a','#fcf1de','#ffffff','#ba3208'];
+  const P=Array.from({length:180},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height,s:6+Math.random()*8,v:2+Math.random()*4,r:Math.random()*6,dr:(Math.random()-.5)*.2,c:cols[Math.random()*cols.length|0],h:Math.random()<.25}));
+  let f=0;(function loop(){x.clearRect(0,0,c.width,c.height);
+    P.forEach(p=>{p.y+=p.v;p.x+=Math.sin((p.y+p.r*50)/40);p.r+=p.dr;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;
+      if(p.h){x.font=p.s*2+'px serif';x.fillText('❤',0,0)}else x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);x.restore()});
+    if(++f<420)requestAnimationFrame(loop);else x.clearRect(0,0,c.width,c.height)})();
+}
+</script>
+</body>
+</html>
